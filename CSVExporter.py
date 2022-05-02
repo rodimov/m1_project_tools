@@ -34,7 +34,7 @@ def export_dir(path):
     servers_dirs = get_all_dir(path)
 
     for server_dir in servers_dirs:
-        csv_path = path + server_dir + "/csv/"
+        csv_path = path + server_dir + "_csv/"
         db_path = path + server_dir + "/db/"
 
         if not os.path.exists(csv_path):
