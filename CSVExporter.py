@@ -5,6 +5,7 @@ import csv
 
 def export_to_csv(db_path, csv_path):
     conn = sql.connect(db_path)
+    lines = 0
 
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM requests")
@@ -17,9 +18,12 @@ def export_to_csv(db_path, csv_path):
 
         while data is not None and len(data):
             csv_writer.writerow(data)
+            lines += 1
             data = cursor.fetchone()
 
         print(f'Exported: {db_path}')
+
+    return lines
 
 
 def get_all_dir(path):
@@ -32,6 +36,7 @@ def get_all_db(path):
 
 def export_dir(path):
     servers_dirs = get_all_dir(path)
+    lines = 0
 
     for server_dir in servers_dirs:
         csv_path = path + server_dir + "_csv/"
@@ -44,4 +49,7 @@ def export_dir(path):
 
         for db_file in db_files:
             csv_filename = os.path.splitext(db_file)[0] + '.csv'
-            export_to_csv(db_path + db_file, csv_path + csv_filename)
+            lines += export_to_csv(db_path + db_file, csv_path + csv_filename)
+            print(f'Lines exported: {lines}')
+
+    print(f'Export done! {lines} exported!')
